@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymReserve - رزرو باشگاه های ورزشی</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sport-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sport-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.2));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .sport-card:hover::before {
+            opacity: 1;
+        }
+        
+        .sport-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(59, 130, 246, 0.4);
+            border-color: rgba(59, 130, 246, 0.6);
+        }
+        
+        .gym-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gym-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gym-card:hover::before {
+            opacity: 1;
+        }
+        
+        .gym-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(34, 197, 94, 0.6);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.5);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.5);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(147, 51, 234, 0.15));
+            border-radius: 32px;
+            padding: 80px 40px;
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .search-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 18px 24px;
+            color: white;
+            width: 100%;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            border-color: rgba(59, 130, 246, 0.6);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            outline: none;
+        }
+        
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .rating {
+            color: #fbbf24;
+            filter: drop-shadow(0 2px 4px rgba(251, 191, 36, 0.3));
+        }
+        
+        .facility-tag {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            padding: 6px 16px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        
+        .price-tag {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+        
+        .modal {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 28px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+        }
+        
+        .image-gallery {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 12px;
+            height: 350px;
+        }
+        
+        .main-image {
+            grid-row: 1 / 3;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .side-image {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .gym-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        
+        .gym-image:hover {
+            transform: scale(1.1);
+        }
+        
+        .navbar {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(25px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .floating-card {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="text-white">
+    <!-- Navigation -->
+    <nav class="navbar fixed top-0 w-full z-50 p-4">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button id="backBtn" class="back-btn" style="display: none;" onclick="goBack()">
+                    ← بازگشت
+                </button>
+                <h1 class="text-3xl font-bold gradient-text">🏋️ GymReserve</h1>
+            </div>
+            <div class="flex items-center gap-6">
+                <span class="text-sm opacity-75">سامانه هوشمند رزرو باشگاه</span>
+                <button onclick="showAdminLogin()" class="text-xs opacity-50 hover:opacity-100 transition-opacity">
+                    ⚙️
+                </button>
+                <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                    👤
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="homePage" class="container mx-auto px-4 pt-28 pb-12">
+        <!-- Hero Section -->
+        <div class="hero-section glass-effect floating-card slide-in">
+            <div class="relative z-10">
+                <h1 class="text-6xl font-black mb-8 gradient-text">
+                    بهترین باشگاه های ورزشی را کشف کنید
+                </h1>
+                <p class="text-2xl mb-12 opacity-90">
+                    از بدنسازی تا تنیس، از کیک بوکس تا یوگا - همه در یک مکان
+                </p>
+                
+                <div class="max-w-3xl mx-auto">
+                    <div class="relative">
+                        <input type="text" class="search-box pr-16" placeholder="🔍 جستجو در شهر، منطقه یا نام باشگاه...">
+                        <button class="absolute left-4 top-1/2 transform -translate-y-1/2 btn-primary">
+                            جستجو
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sports Categories -->
+        <div class="mb-16">
+            <h2 class="text-4xl font-bold mb-12 text-center gradient-text">رشته های ورزشی محبوب</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <div class="sport-card rounded-3xl p-8 text-center slide-in" onclick="selectSport('bodybuilding')" style="animation-delay: 0.1s">
+                    <div class="relative z-10">
+                        <div class="text-7xl mb-6 pulse-animation">🏋️</div>
+                        <h3 class="text-2xl font-bold mb-3">بدنسازی</h3>
+                        <p class="text-sm opacity-75 mb-4">باشگاه های مجهز با دستگاه های مدرن</p>
+                        <div class="text-blue-400 font-bold text-lg">150+ باشگاه</div>
+                    </div>
+                </div>
+                
+                <div class="sport-card rounded-3xl p-8 text-center slide-in" onclick="selectSport('tennis')" style="animation-delay: 0.2s">
+                    <div class="relative z-10">
+                        <div class="text-7xl mb-6 pulse-animation">🎾</div>
+                        <h3 class="text-2xl font-bold mb-3">تنیس</h3>
+                        <p class="text-sm opacity-75 mb-4">زمین های استاندارد با کیفیت بالا</p>
+                        <div class="text-blue-400 font-bold text-lg">65+ باشگاه</div>
+                    </div>
+                </div>
+                
+                <div class="sport-card rounded-3xl p-8 text-center slide-in" onclick="selectSport('kickboxing')" style="animation-delay: 0.3s">
+                    <div class="relative z-10">
+                        <div class="text-7xl mb-6 pulse-animation">🥊</div>
+                        <h3 class="text-2xl font-bold mb-3">کیک بوکس</h3>
+                        <p class="text-sm opacity-75 mb-4">آموزش با مربیان حرفه ای</p>
+                        <div class="text-blue-400 font-bold text-lg">45+ باشگاه</div>
+                    </div>
+                </div>
+                
+                <div class="sport-card rounded-3xl p-8 text-center slide-in" onclick="selectSport('swimming')" style="animation-delay: 0.4s">
+                    <div class="relative z-10">
+                        <div class="text-7xl mb-6 pulse-animation">🏊</div>
+                        <h3 class="text-2xl font-bold mb-3">شنا</h3>
+                        <p class="text-sm opacity-75 mb-4">استخرهای تمیز و بهداشتی</p>
+                        <div class="text-blue-400 font-bold text-lg">38+ باشگاه</div>
+                    </div>
+                </div>
+                
+                <div class="sport-card rounded-3xl p-8 text-center slide-in" onclick="selectSport('yoga')" style="animation-delay: 0.5s">
+                    <div class="relative z-10">
+                        <div class="text-7xl mb-6 pulse-animation">🧘</div>
+                        <h3 class="text-2xl font-bold mb-3">یوگا</h3>
+                        <p class="text-sm opacity-75 mb-4">کلاس های آرامش بخش</p>
+                        <div class="text-blue-400 font-bold text-lg">32+ باشگاه</div>
+                    </div>
+                </div>
+                
+                <div class="sport-card rounded-3xl p-8 text-center slide-in" onclick="selectSport('basketball')" style="animation-delay: 0.6s">
+                    <div class="relative z-10">
+                        <div class="text-7xl mb-6 pulse-animation">🏀</div>
+                        <h3 class="text-2xl font-bold mb-3">بسکتبال</h3>
+                        <p class="text-sm opacity-75 mb-4">سالن های مجهز و استاندارد</p>
+                        <div class="text-blue-400 font-bold text-lg">28+ باشگاه</div>
+                    </div>
+                </div>
+                
+                <div class="sport-card rounded-3xl p-8 text-center slide-in" onclick="selectSport('football')" style="animation-delay: 0.7s">
+                    <div class="relative z-10">
+                        <div class="text-7xl mb-6 pulse-animation">⚽</div>
+                        <h3 class="text-2xl font-bold mb-3">فوتبال</h3>
+                        <p class="text-sm opacity-75 mb-4">زمین های چمن مصنوعی</p>
+                        <div class="text-blue-400 font-bold text-lg">85+ باشگاه</div>
+                    </div>
+                </div>
+                
+                <div class="sport-card rounded-3xl p-8 text-center slide-in" onclick="selectSport('martial-arts')" style="animation-delay: 0.8s">
+                    <div class="relative z-10">
+                        <div class="text-7xl mb-6 pulse-animation">🥋</div>
+                        <h3 class="text-2xl font-bold mb-3">هنرهای رزمی</h3>
+                        <p class="text-sm opacity-75 mb-4">کاراته، تکواندو، جودو</p>
+                        <div class="text-blue-400 font-bold text-lg">42+ باشگاه</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popular Gyms -->
+        <div class="mb-16">
+            <h2 class="text-4xl font-bold mb-12 text-center gradient-text">محبوب ترین باشگاه ها</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="gym-card rounded-3xl p-8 slide-in" onclick="showGymDetail(1)">
+                    <div class="relative z-10">
+                        <div class="w-full h-56 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl mb-6 flex items-center justify-center text-6xl">
+                            🏋️
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">باشگاه اطلس VIP</h3>
+                        <p class="text-sm opacity-75 mb-4">📍 تهران، ولیعصر</p>
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="rating">⭐⭐⭐⭐⭐</span>
+                            <span class="text-sm">4.9 (312 نظر)</span>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="facility-tag">پارکینگ</span>
+                            <span class="facility-tag">سونا</span>
+                            <span class="facility-tag">مربی شخصی</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="price-tag">280,000 تومان</div>
+                            <button class="btn-primary">مشاهده</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gym-card rounded-3xl p-8 slide-in" onclick="showGymDetail(4)" style="animation-delay: 0.1s">
+                    <div class="relative z-10">
+                        <div class="w-full h-56 bg-gradient-to-r from-green-500 to-blue-600 rounded-2xl mb-6 flex items-center justify-center text-6xl">
+                            🎾
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">کلوپ تنیس پارسیان</h3>
+                        <p class="text-sm opacity-75 mb-4">📍 تهران، نیاوران</p>
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="rating">⭐⭐⭐⭐⭐</span>
+                            <span class="text-sm">4.8 (245 نظر)</span>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="facility-tag">زمین روباز</span>
+                            <span class="facility-tag">کافه</span>
+                            <span class="facility-tag">رختکن VIP</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="price-tag">220,000 تومان</div>
+                            <button class="btn-primary">مشاهده</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gym-card rounded-3xl p-8 slide-in" onclick="showGymDetail(6)" style="animation-delay: 0.2s">
+                    <div class="relative z-10">
+                        <div class="w-full h-56 bg-gradient-to-r from-red-500 to-orange-600 rounded-2xl mb-6 flex items-center justify-center text-6xl">
+                            🥊
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">آکادمی کیک بوکس چمپیون</h3>
+                        <p class="text-sm opacity-75 mb-4">📍 تهران، سعادت آباد</p>
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="rating">⭐⭐⭐⭐⭐</span>
+                            <span class="text-sm">4.7 (189 نظر)</span>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="facility-tag">مربی بین المللی</span>
+                            <span class="facility-tag">تجهیزات کامل</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="price-tag">250,000 تومان</div>
+                            <button class="btn-primary">مشاهده</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass-effect rounded-3xl p-8 text-center slide-in">
+                <div class="text-5xl mb-4">🎯</div>
+                <h3 class="text-xl font-bold mb-3">هدفمند</h3>
+                <p class="opacity-75">بهترین باشگاه های منطقه شما را پیدا کنید</p>
+            </div>
+            <div class="glass-effect rounded-3xl p-8 text-center slide-in" style="animation-delay: 0.1s">
+                <div class="text-5xl mb-4">⚡</div>
+                <h3 class="text-xl font-bold mb-3">سریع</h3>
+                <p class="opacity-75">رزرو آنلاین در کمتر از 2 دقیقه</p>
+            </div>
+            <div class="glass-effect rounded-3xl p-8 text-center slide-in" style="animation-delay: 0.2s">
+                <div class="text-5xl mb-4">🔒</div>
+                <h3 class="text-xl font-bold mb-3">امن</h3>
+                <p class="opacity-75">پرداخت امن و تضمین کیفیت خدمات</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sport Gyms List Page -->
+    <div id="sportGymsPage" class="container mx-auto px-4 pt-28 pb-12" style="display: none;">
+        <div class="mb-12">
+            <h1 id="sportTitle" class="text-5xl font-bold mb-6 gradient-text">باشگاه های بدنسازی</h1>
+            <p class="text-xl opacity-75">بهترین باشگاه های منطقه شما</p>
+        </div>
+
+        <!-- Filters -->
+        <div class="glass-effect rounded-3xl p-8 mb-12">
+            <h3 class="text-xl font-bold mb-6">فیلترها</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div>
+                    <label class="block text-sm font-medium mb-2">منطقه</label>
+                    <select class="search-box">
+                        <option>همه مناطق</option>
+                        <option>منطقه 1 - تهران</option>
+                        <option>منطقه 2 - تهران</option>
+                        <option>منطقه 3 - تهران</option>
+                        <option>منطقه 6 - تهران</option>
+                        <option>منطقه 22 - تهران</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">محدوده قیمت</label>
+                    <select class="search-box">
+                        <option>همه قیمت ها</option>
+                        <option>زیر 200 هزار تومان</option>
+                        <option>200-400 هزار تومان</option>
+                        <option>400-600 هزار تومان</option>
+                        <option>بالای 600 هزار تومان</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">امتیاز</label>
+                    <select class="search-box">
+                        <option>همه امتیازها</option>
+                        <option>5 ستاره</option>
+                        <option>4+ ستاره</option>
+                        <option>3+ ستاره</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">امکانات</label>
+                    <select class="search-box">
+                        <option>همه امکانات</option>
+                        <option>پارکینگ</option>
+                        <option>سونا</option>
+                        <option>استخر</option>
+                        <option>مربی شخصی</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gyms List -->
+        <div id="gymsList" class="space-y-8">
+            <!-- Gyms will be populated here -->
+        </div>
+    </div>
+
+    <!-- Gym Detail Page -->
+    <div id="gymDetailPage" class="container mx-auto px-4 pt-28 pb-12" style="display: none;">
+        <div id="gymDetailContent">
+            <!-- Gym details will be populated here -->
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="adminLoginModal" class="modal fixed inset-0 flex items-center justify-center z-50" style="display: none;">
+        <div class="modal-content p-8 max-w-md w-full mx-4">
+            <h2 class="text-3xl font-bold mb-6 text-center gradient-text">🔐 ورود مدیر</h2>
+            
+            <div class="mb-6">
+                <label class="block text-lg font-medium mb-3">رمز عبور مدیریت</label>
+                <input type="password" id="adminPassword" class="search-box" placeholder="رمز عبور را وارد کنید">
+            </div>
+            
+            <div class="flex gap-4">
+                <button onclick="adminLogin()" class="btn-success flex-1 text-lg py-3">
+                    ورود
+                </button>
+                <button onclick="closeAdminLogin()" class="btn-primary py-3 px-6">
+                    انصراف
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="container mx-auto px-4 pt-28 pb-12" style="display: none;">
+        <div class="mb-12">
+            <div class="flex items-center justify-between">
+                <h1 class="text-5xl font-bold gradient-text">🛠️ پنل مدیریت</h1>
+                <button onclick="logoutAdmin()" class="btn-primary">
+                    خروج از پنل
+                </button>
+            </div>
+            <p class="text-xl opacity-75 mt-4">مدیریت باشگاه ها و امکانات</p>
+        </div>
+
+        <!-- Admin Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+            <div class="glass-effect rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">🏋️</div>
+                <div class="text-2xl font-bold" id="totalGyms">0</div>
+                <div class="text-sm opacity-75">کل باشگاه ها</div>
+            </div>
+            <div class="glass-effect rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">📊</div>
+                <div class="text-2xl font-bold">8</div>
+                <div class="text-sm opacity-75">رشته ورزشی</div>
+            </div>
+            <div class="glass-effect rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">⭐</div>
+                <div class="text-2xl font-bold">4.8</div>
+                <div class="text-sm opacity-75">میانگین امتیاز</div>
+            </div>
+            <div class="glass-effect rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">👥</div>
+                <div class="text-2xl font-bold">1,247</div>
+                <div class="text-sm opacity-75">کل نظرات</div>
+            </div>
+        </div>
+
+        <!-- Add New Gym Form -->
+        <div class="glass-effect rounded-3xl p-8 mb-12">
+            <h2 class="text-3xl font-bold mb-8 gradient-text">➕ افزودن باشگاه جدید</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label class="block text-lg font-medium mb-3">نام باشگاه</label>
+                    <input type="text" id="gymName" class="search-box" placeholder="نام باشگاه را وارد کنید">
+                </div>
+                
+                <div>
+                    <label class="block text-lg font-medium mb-3">رشته ورزشی</label>
+                    <select id="gymSport" class="search-box">
+                        <option value="bodybuilding">بدنسازی</option>
+                        <option value="tennis">تنیس</option>
+                        <option value="kickboxing">کیک بوکس</option>
+                        <option value="swimming">شنا</option>
+                        <option value="yoga">یوگا</option>
+                        <option value="basketball">بسکتبال</option>
+                        <option value="football">فوتبال</option>
+                        <option value="martial-arts">هنرهای رزمی</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-lg font-medium mb-3">آدرس</label>
+                    <input type="text" id="gymLocation" class="search-box" placeholder="آدرس کامل باشگاه">
+                </div>
+                
+                <div>
+                    <label class="block text-lg font-medium mb-3">قیمت (تومان)</label>
+                    <input type="number" id="gymPrice" class="search-box" placeholder="قیمت هر جلسه">
+                </div>
+                
+                <div>
+                    <label class="block text-lg font-medium mb-3">امتیاز</label>
+                    <select id="gymRating" class="search-box">
+                        <option value="4.9">⭐⭐⭐⭐⭐ (4.9)</option>
+                        <option value="4.8">⭐⭐⭐⭐⭐ (4.8)</option>
+                        <option value="4.7">⭐⭐⭐⭐⭐ (4.7)</option>
+                        <option value="4.6">⭐⭐⭐⭐⭐ (4.6)</option>
+                        <option value="4.5">⭐⭐⭐⭐⭐ (4.5)</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-lg font-medium mb-3">تعداد نظرات</label>
+                    <input type="number" id="gymReviews" class="search-box" placeholder="تعداد نظرات" value="50">
+                </div>
+                
+                <div>
+                    <label class="block text-lg font-medium mb-3">شماره تماس</label>
+                    <input type="tel" id="gymPhone" class="search-box" placeholder="021-12345678">
+                </div>
+                
+                <div>
+                    <label class="block text-lg font-medium mb-3">ساعات کاری</label>
+                    <input type="text" id="gymHours" class="search-box" placeholder="8:00 - 22:00" value="8:00 - 22:00">
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-lg font-medium mb-3">توضیحات باشگاه</label>
+                <textarea id="gymDescription" class="search-box h-32" placeholder="توضیحات کامل درباره باشگاه..."></textarea>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-lg font-medium mb-3">وب سایت</label>
+                <input type="url" id="gymWebsite" class="search-box" placeholder="https://example.com">
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-lg font-medium mb-3">امکانات (هر کدام در خط جداگانه)</label>
+                <textarea id="gymFacilities" class="search-box h-32" placeholder="پارکینگ&#10;سونا&#10;مربی شخصی&#10;کافه"></textarea>
+            </div>
+            
+            <div class="mb-8">
+                <label class="block text-lg font-medium mb-3">آپلود تصاویر باشگاه</label>
+                <input type="file" id="gymImages" class="search-box" multiple accept="image/*" onchange="handleImageUpload(event)">
+                <div id="imagePreview" class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4"></div>
+            </div>
+            
+            <button onclick="addNewGym()" class="btn-success text-xl py-4 px-8">
+                ✅ افزودن باشگاه
+            </button>
+        </div>
+
+        <!-- Existing Gyms Management -->
+        <div class="glass-effect rounded-3xl p-8">
+            <h2 class="text-3xl font-bold mb-8 gradient-text">📋 مدیریت باشگاه های موجود</h2>
+            <div id="adminGymsList">
+                <!-- Existing gyms will be listed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservation Modal -->
+    <div id="reservationModal" class="modal fixed inset-0 flex items-center justify-center z-50" style="display: none;">
+        <div class="modal-content p-10 max-w-3xl w-full mx-4">
+            <h2 class="text-4xl font-bold mb-8 text-center gradient-text">رزرو باشگاه</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <label class="block text-lg font-medium mb-3">تاریخ مراجعه</label>
+                    <input type="date" class="search-box">
+                </div>
+                
+                <div>
+                    <label class="block text-lg font-medium mb-3">بازه زمانی</label>
+                    <select class="search-box">
+                        <option>8:00 - 10:00 صبح</option>
+                        <option>10:00 - 12:00 صبح</option>
+                        <option>14:00 - 16:00 بعدازظهر</option>
+                        <option>16:00 - 18:00 بعدازظهر</option>
+                        <option>18:00 - 20:00 عصر</option>
+                        <option>20:00 - 22:00 شب</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <label class="block text-lg font-medium mb-4">نوع عضویت</label>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-effect rounded-2xl p-6 text-center cursor-pointer hover:border-blue-500 transition-all">
+                        <h3 class="text-xl font-bold mb-3">روزانه</h3>
+                        <div class="text-3xl font-bold text-blue-400 mb-2">65,000</div>
+                        <div class="text-sm opacity-75">تومان</div>
+                    </div>
+                    <div class="glass-effect rounded-2xl p-6 text-center cursor-pointer hover:border-green-500 transition-all">
+                        <h3 class="text-xl font-bold mb-3">هفتگی</h3>
+                        <div class="text-3xl font-bold text-green-400 mb-2">380,000</div>
+                        <div class="text-sm opacity-75">تومان</div>
+                    </div>
+                    <div class="glass-effect rounded-2xl p-6 text-center cursor-pointer hover:border-purple-500 transition-all">
+                        <h3 class="text-xl font-bold mb-3">ماهانه</h3>
+                        <div class="text-3xl font-bold text-purple-400 mb-2">1,200,000</div>
+                        <div class="text-sm opacity-75">تومان</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-10">
+                <label class="block text-lg font-medium mb-4">اطلاعات تماس</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="text" class="search-box" placeholder="نام و نام خانوادگی">
+                    <input type="tel" class="search-box" placeholder="شماره تماس">
+                    <input type="email" class="search-box" placeholder="ایمیل (اختیاری)">
+                    <input type="text" class="search-box" placeholder="کد ملی">
+                </div>
+            </div>
+            
+            <div class="flex gap-6">
+                <button onclick="confirmReservation()" class="btn-success flex-1 text-xl py-4">
+                    ✅ تایید و پرداخت
+                </button>
+                <button onclick="closeReservation()" class="btn-primary py-4 px-8">
+                    انصراف
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced gym data with more details
+        const gymData = {
+            bodybuilding: [
+                {
+                    id: 1,
+                    name: 'باشگاه اطلس VIP',
+                    location: 'تهران، ولیعصر، خیابان مطهری',
+                    rating: 4.9,
+                    reviews: 312,
+                    price: '280,000',
+                    facilities: ['پارکینگ اختصاصی', 'سونا و جکوزی', 'مربی شخصی', 'دوش آب گرم', 'کافه و رستوران', 'Wi-Fi رایگان'],
+                    description: 'یکی از مجهزترین باشگاه های بدنسازی تهران با تجهیزات مدرن آلمانی و مربیان بین المللی. فضای 800 متری با امکانات کامل VIP.',
+                    website: 'https://atlas-gym.ir',
+                    phone: '021-88776655',
+                    hours: '6:00 - 24:00',
+                    images: ['🏋️', '💪', '🏃', '🚿', '☕', '🅿️']
+                },
+                {
+                    id: 2,
+                    name: 'باشگاه تایتان پلاس',
+                    location: 'تهران، سعادت آباد، مجتمع تجاری کوروش',
+                    rating: 4.7,
+                    reviews: 245,
+                    price: '240,000',
+                    facilities: ['پارکینگ', 'کافه', 'مربی شخصی', 'کلاس گروهی', 'رختکن مجهز'],
+                    description: 'باشگاه مدرن با فضای وسیع و دستگاه های روز دنیا. محیطی دوستانه برای ورزشکاران حرفه ای و مبتدی.',
+                    website: 'https://titan-gym.ir',
+                    phone: '021-44332211',
+                    hours: '7:00 - 23:00',
+                    images: ['🏋️', '💪', '🏃', '☕', '👥', '🏢']
+                },
+                {
+                    id: 3,
+                    name: 'باشگاه پاور هاوس',
+                    location: 'تهران، نیاوران، خیابان جماران',
+                    rating: 4.8,
+                    reviews: 189,
+                    price: '320,000',
+                    facilities: ['پارکینگ VIP', 'سونا', 'استخر', 'مربی شخصی', 'ماساژ درمانی', 'کلاس یوگا'],
+                    description: 'باشگاه لوکس با امکانات کامل و خدمات VIP. مناسب برای افرادی که به دنبال بهترین کیفیت هستند.',
+                    website: 'https://powerhouse-gym.ir',
+                    phone: '021-22998877',
+                    hours: '6:00 - 24:00',
+                    images: ['🏋️', '🏊', '🧖', '💆', '🌟', '🏆']
+                }
+            ],
+            tennis: [
+                {
+                    id: 4,
+                    name: 'کلوپ تنیس پارسیان',
+                    location: 'تهران، نیاوران، خیابان نیاوران',
+                    rating: 4.8,
+                    reviews: 245,
+                    price: '220,000',
+                    facilities: ['زمین روباز', 'زمین سرپوشیده', 'کافه', 'رختکن VIP', 'پارکینگ', 'مربی حرفه ای'],
+                    description: 'بهترین کلوپ تنیس تهران با زمین های استاندارد بین المللی و مربیان مجرب. میزبان مسابقات ملی.',
+                    website: 'https://parsian-tennis.ir',
+                    phone: '021-22445566',
+                    hours: '8:00 - 22:00',
+                    images: ['🎾', '🏆', '☕', '🚗', '👨‍🏫', '🏢']
+                },
+                {
+                    id: 5,
+                    name: 'باشگاه تنیس آریا',
+                    location: 'تهران، ولنجک، خیابان ولنجک',
+                    rating: 4.6,
+                    reviews: 167,
+                    price: '180,000',
+                    facilities: ['زمین سرپوشیده', 'مربی حرفه ای', 'پارکینگ', 'کلاس گروهی'],
+                    description: 'آموزش تنیس برای تمام سطوح با مربیان مجرب. محیطی دوستانه و حرفه ای.',
+                    website: 'https://aria-tennis.ir',
+                    phone: '021-26778899',
+                    hours: '9:00 - 21:00',
+                    images: ['🎾', '👨‍🏫', '🏢', '🚗', '👥', '🏅']
+                }
+            ],
+            kickboxing: [
+                {
+                    id: 6,
+                    name: 'آکادمی کیک بوکس چمپیون',
+                    location: 'تهران، سعادت آباد، خیابان نیلوفر',
+                    rating: 4.7,
+                    reviews: 189,
+                    price: '250,000',
+                    facilities: ['مربی بین المللی', 'تجهیزات کامل', 'رینگ حرفه ای', 'کیسه های تمرینی', 'رختکن مجهز'],
+                    description: 'آموزش کیک بوکس با مربیان قهرمان کشوری و بین المللی. تمرینات حرفه ای و آمادگی برای مسابقات.',
+                    website: 'https://champion-kickbox.ir',
+                    phone: '021-44556677',
+                    hours: '16:00 - 22:00',
+                    images: ['🥊', '🏆', '🥋', '💪', '🎯', '👊']
+                }
+            ],
+            swimming: [
+                {
+                    id: 7,
+                    name: 'مجموعه آبی آکوا',
+                    location: 'تهران، الهیه، خیابان الهیه',
+                    rating: 4.8,
+                    reviews: 203,
+                    price: '200,000',
+                    facilities: ['استخر 25 متری', 'استخر کودکان', 'سونا', 'جکوزی', 'مربی شنا', 'کافه'],
+                    description: 'مجموعه کامل آبی با استخرهای تمیز و بهداشتی. آموزش شنا برای تمام سنین.',
+                    website: 'https://aqua-swimming.ir',
+                    phone: '021-22334455',
+                    hours: '8:00 - 22:00',
+                    images: ['🏊', '🛁', '🌊', '🏆', '👶', '☕']
+                }
+            ]
+        };
+
+        let currentSport = '';
+        let currentGym = null;
+        let isAdminLoggedIn = false;
+        let uploadedImages = [];
+
+        // Select sport and show gyms
+        function selectSport(sport) {
+            currentSport = sport;
+            const sportNames = {
+                bodybuilding: 'بدنسازی',
+                tennis: 'تنیس',
+                kickboxing: 'کیک بوکس',
+                swimming: 'شنا',
+                yoga: 'یوگا',
+                basketball: 'بسکتبال',
+                football: 'فوتبال',
+                'martial-arts': 'هنرهای رزمی'
+            };
+
+            document.getElementById('sportTitle').textContent = `باشگاه های ${sportNames[sport]}`;
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('sportGymsPage').style.display = 'block';
+            document.getElementById('backBtn').style.display = 'block';
+
+            displayGyms(sport);
+        }
+
+        // Display gyms for selected sport
+        function displayGyms(sport) {
+            const gymsList = document.getElementById('gymsList');
+            const gyms = gymData[sport] || [];
+
+            if (gyms.length === 0) {
+                gymsList.innerHTML = `
+                    <div class="glass-effect rounded-3xl p-16 text-center">
+                        <div class="text-8xl mb-6">🏗️</div>
+                        <h3 class="text-3xl font-bold mb-6 gradient-text">به زودی...</h3>
+                        <p class="text-xl opacity-75">باشگاه های این رشته به زودی اضافه خواهند شد</p>
+                    </div>
+                `;
+                return;
+            }
+
+            gymsList.innerHTML = gyms.map((gym, index) => `
+                <div class="gym-card rounded-3xl p-8 slide-in" onclick="showGymDetail(${gym.id})" style="animation-delay: ${index * 0.1}s">
+                    <div class="relative z-10">
+                        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                            <div class="lg:col-span-1">
+                                <div class="w-full h-56 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-7xl">
+                                    ${gym.images[0]}
+                                </div>
+                            </div>
+                            
+                            <div class="lg:col-span-2">
+                                <h3 class="text-3xl font-bold mb-3">${gym.name}</h3>
+                                <p class="text-lg opacity-75 mb-4">📍 ${gym.location}</p>
+                                
+                                <div class="flex items-center gap-3 mb-6">
+                                    <span class="rating text-xl">⭐⭐⭐⭐⭐</span>
+                                    <span class="text-lg font-semibold">${gym.rating}</span>
+                                    <span class="text-sm opacity-75">(${gym.reviews} نظر)</span>
+                                </div>
+                                
+                                <p class="opacity-90 mb-6 text-lg leading-relaxed">${gym.description}</p>
+                                
+                                <div class="flex flex-wrap gap-3">
+                                    ${gym.facilities.slice(0, 4).map(facility => `<span class="facility-tag">${facility}</span>`).join('')}
+                                    ${gym.facilities.length > 4 ? `<span class="facility-tag">+${gym.facilities.length - 4} مورد دیگر</span>` : ''}
+                                </div>
+                            </div>
+                            
+                            <div class="lg:col-span-1 flex flex-col justify-between">
+                                <div class="text-center mb-6">
+                                    <div class="price-tag text-2xl mb-3">${gym.price} تومان</div>
+                                    <div class="text-sm opacity-75">هر جلسه</div>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <button class="btn-primary w-full text-lg py-4" onclick="event.stopPropagation(); showGymDetail(${gym.id})">
+                                        📋 مشاهده جزئیات
+                                    </button>
+                                    <button class="btn-success w-full text-lg py-4" onclick="event.stopPropagation(); showReservation(${gym.id})">
+                                        ⚡ رزرو فوری
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Show gym detail
+        function showGymDetail(gymId) {
+            // Find gym in all categories
+            let gym = null;
+            for (const sport in gymData) {
+                gym = gymData[sport].find(g => g.id === gymId);
+                if (gym) break;
+            }
+
+            if (!gym) return;
+
+            currentGym = gym;
+            
+            document.getElementById('sportGymsPage').style.display = 'none';
+            document.getElementById('gymDetailPage').style.display = 'block';
+
+            document.getElementById('gymDetailContent').innerHTML = `
+                <div class="mb-12 slide-in">
+                    <h1 class="text-5xl font-bold mb-6 gradient-text">${gym.name}</h1>
+                    <p class="text-2xl opacity-75">📍 ${gym.location}</p>
+                </div>
+
+                <!-- Image Gallery -->
+                <div class="image-gallery mb-12 slide-in">
+                    <div class="main-image">
+                        <div class="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-9xl gym-image">
+                            ${gym.images[0]}
+                        </div>
+                    </div>
+                    <div class="side-image">
+                        <div class="w-full h-full bg-gradient-to-r from-green-500 to-blue-600 flex items-center justify-center text-5xl gym-image">
+                            ${gym.images[1]}
+                        </div>
+                    </div>
+                    <div class="side-image">
+                        <div class="w-full h-full bg-gradient-to-r from-purple-500 to-pink-600 flex items-center justify-center text-5xl gym-image">
+                            ${gym.images[2]}
+                        </div>
+                    </div>
+                    <div class="side-image">
+                        <div class="w-full h-full bg-gradient-to-r from-orange-500 to-red-600 flex items-center justify-center text-5xl gym-image">
+                            ${gym.images[3]}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    <div class="lg:col-span-2 space-y-12">
+                        <!-- Description -->
+                        <div class="glass-effect rounded-3xl p-8 slide-in">
+                            <h2 class="text-3xl font-bold mb-6 gradient-text">درباره باشگاه</h2>
+                            <p class="text-xl leading-relaxed opacity-90">${gym.description}</p>
+                        </div>
+
+                        <!-- Facilities -->
+                        <div class="glass-effect rounded-3xl p-8 slide-in">
+                            <h2 class="text-3xl font-bold mb-6 gradient-text">امکانات و تجهیزات</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                ${gym.facilities.map(facility => `
+                                    <div class="flex items-center gap-4 p-4 bg-green-500 bg-opacity-20 rounded-2xl border border-green-500 border-opacity-30">
+                                        <span class="text-green-400 text-2xl">✓</span>
+                                        <span class="text-lg">${facility}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Reviews -->
+                        <div class="glass-effect rounded-3xl p-8 slide-in">
+                            <h2 class="text-3xl font-bold mb-6 gradient-text">نظرات کاربران</h2>
+                            <div class="flex items-center gap-6 mb-8">
+                                <div class="text-5xl font-bold">${gym.rating}</div>
+                                <div>
+                                    <div class="rating text-3xl mb-2">⭐⭐⭐⭐⭐</div>
+                                    <div class="text-lg opacity-75">${gym.reviews} نظر</div>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-6">
+                                <div class="border-r-4 border-blue-500 pr-6 py-4">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <span class="font-bold text-lg">علی محمدی</span>
+                                        <span class="rating text-lg">⭐⭐⭐⭐⭐</span>
+                                    </div>
+                                    <p class="opacity-75 text-lg">باشگاه فوق العاده ای با امکانات عالی و مربیان حرفه ای. پیشنهاد می کنم.</p>
+                                </div>
+                                
+                                <div class="border-r-4 border-green-500 pr-6 py-4">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <span class="font-bold text-lg">سارا احمدی</span>
+                                        <span class="rating text-lg">⭐⭐⭐⭐⭐</span>
+                                    </div>
+                                    <p class="opacity-75 text-lg">محیط تمیز و دوستانه، تجهیزات مدرن و کادر مجرب.</p>
+                                </div>
+                                
+                                <div class="border-r-4 border-purple-500 pr-6 py-4">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <span class="font-bold text-lg">محمد رضایی</span>
+                                        <span class="rating text-lg">⭐⭐⭐⭐⭐</span>
+                                    </div>
+                                    <p class="opacity-75 text-lg">بهترین باشگاه منطقه! خدمات عالی و قیمت مناسب.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-1">
+                        <!-- Booking Card -->
+                        <div class="glass-effect rounded-3xl p-8 sticky top-32 slide-in">
+                            <div class="text-center mb-8">
+                                <div class="price-tag text-3xl mb-4">${gym.price} تومان</div>
+                                <div class="text-lg opacity-75">هر جلسه</div>
+                            </div>
+
+                            <div class="space-y-6 mb-8">
+                                <button onclick="showReservation(${gym.id})" class="btn-success w-full text-xl py-5">
+                                    🎯 رزرو کنید
+                                </button>
+                                
+                                <a href="${gym.website}" target="_blank" class="btn-primary w-full text-center block py-4 text-lg">
+                                    🌐 وب سایت باشگاه
+                                </a>
+                            </div>
+
+                            <!-- Contact Info -->
+                            <div class="border-t border-gray-600 pt-6">
+                                <h3 class="font-bold mb-4 text-xl">اطلاعات تماس</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-2xl">📞</span>
+                                        <span class="text-lg">${gym.phone}</span>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-2xl">📍</span>
+                                        <span class="text-lg">${gym.location}</span>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-2xl">🕐</span>
+                                        <span class="text-lg">${gym.hours}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show reservation modal
+        function showReservation(gymId) {
+            document.getElementById('reservationModal').style.display = 'flex';
+        }
+
+        // Close reservation modal
+        function closeReservation() {
+            document.getElementById('reservationModal').style.display = 'none';
+        }
+
+        // Confirm reservation
+        function confirmReservation() {
+            const reservationCode = 'GYM' + Math.floor(Math.random() * 100000);
+            alert(`🎉 رزرو شما با موفقیت ثبت شد!\n\n📋 کد رزرو: ${reservationCode}\n💳 مبلغ قابل پرداخت: ${currentGym ? currentGym.price : '0'} تومان\n\n📱 پیامک تایید برای شما ارسال خواهد شد.`);
+            closeReservation();
+        }
+
+        // Go back function
+        function goBack() {
+            if (document.getElementById('gymDetailPage').style.display === 'block') {
+                document.getElementById('gymDetailPage').style.display = 'none';
+                document.getElementById('sportGymsPage').style.display = 'block';
+            } else if (document.getElementById('sportGymsPage').style.display === 'block') {
+                document.getElementById('sportGymsPage').style.display = 'none';
+                document.getElementById('homePage').style.display = 'block';
+                document.getElementById('backBtn').style.display = 'none';
+            }
+        }
+
+        // Admin Functions
+        function showAdminLogin() {
+            document.getElementById('adminLoginModal').style.display = 'flex';
+        }
+
+        function closeAdminLogin() {
+            document.getElementById('adminLoginModal').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        function adminLogin() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === '1234543') {
+                isAdminLoggedIn = true;
+                closeAdminLogin();
+                showAdminPanel();
+                updateAdminStats();
+                loadAdminGymsList();
+            } else {
+                alert('❌ رمز عبور اشتباه است!');
+            }
+        }
+
+        function showAdminPanel() {
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('sportGymsPage').style.display = 'none';
+            document.getElementById('gymDetailPage').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            document.getElementById('backBtn').style.display = 'none';
+        }
+
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('homePage').style.display = 'block';
+            clearAdminForm();
+        }
+
+        function updateAdminStats() {
+            let totalGyms = 0;
+            for (const sport in gymData) {
+                totalGyms += gymData[sport].length;
+            }
+            document.getElementById('totalGyms').textContent = totalGyms;
+        }
+
+        function handleImageUpload(event) {
+            const files = event.target.files;
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+            uploadedImages = [];
+
+            for (let i = 0; i < files.length && i < 6; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    uploadedImages.push(e.target.result);
+                    const imgDiv = document.createElement('div');
+                    imgDiv.className = 'relative';
+                    imgDiv.innerHTML = `
+                        <img src="${e.target.result}" class="w-full h-32 object-cover rounded-lg">
+                        <button onclick="removeImage(${uploadedImages.length - 1})" class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 text-xs">×</button>
+                    `;
+                    preview.appendChild(imgDiv);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeImage(index) {
+            uploadedImages.splice(index, 1);
+            const preview = document.getElementById('imagePreview');
+            preview.children[index].remove();
+        }
+
+        function addNewGym() {
+            if (!isAdminLoggedIn) {
+                alert('❌ دسترسی غیرمجاز!');
+                return;
+            }
+
+            const name = document.getElementById('gymName').value;
+            const sport = document.getElementById('gymSport').value;
+            const location = document.getElementById('gymLocation').value;
+            const price = document.getElementById('gymPrice').value;
+            const rating = parseFloat(document.getElementById('gymRating').value);
+            const reviews = parseInt(document.getElementById('gymReviews').value);
+            const phone = document.getElementById('gymPhone').value;
+            const hours = document.getElementById('gymHours').value;
+            const description = document.getElementById('gymDescription').value;
+            const website = document.getElementById('gymWebsite').value;
+            const facilities = document.getElementById('gymFacilities').value.split('\n').filter(f => f.trim());
+
+            if (!name || !location || !price || !description || !phone) {
+                alert('❌ لطفاً تمام فیلدهای ضروری را پر کنید!');
+                return;
+            }
+
+            // Generate new ID
+            let maxId = 0;
+            for (const sportKey in gymData) {
+                gymData[sportKey].forEach(gym => {
+                    if (gym.id > maxId) maxId = gym.id;
+                });
+            }
+            const newId = maxId + 1;
+
+            // Create gym object
+            const newGym = {
+                id: newId,
+                name: name,
+                location: location,
+                rating: rating,
+                reviews: reviews,
+                price: price.toString(),
+                facilities: facilities,
+                description: description,
+                website: website || '#',
+                phone: phone,
+                hours: hours,
+                images: uploadedImages.length > 0 ? uploadedImages : ['🏋️', '💪', '🏃', '🚿', '☕', '🅿️']
+            };
+
+            // Add to gym data
+            if (!gymData[sport]) {
+                gymData[sport] = [];
+            }
+            gymData[sport].push(newGym);
+
+            alert(`✅ باشگاه "${name}" با موفقیت اضافه شد!`);
+            clearAdminForm();
+            updateAdminStats();
+            loadAdminGymsList();
+        }
+
+        function clearAdminForm() {
+            document.getElementById('gymName').value = '';
+            document.getElementById('gymLocation').value = '';
+            document.getElementById('gymPrice').value = '';
+            document.getElementById('gymDescription').value = '';
+            document.getElementById('gymWebsite').value = '';
+            document.getElementById('gymFacilities').value = '';
+            document.getElementById('gymPhone').value = '';
+            document.getElementById('gymImages').value = '';
+            document.getElementById('imagePreview').innerHTML = '';
+            uploadedImages = [];
+        }
+
+        function loadAdminGymsList() {
+            const adminList = document.getElementById('adminGymsList');
+            let html = '';
+
+            for (const sport in gymData) {
+                const sportNames = {
+                    bodybuilding: 'بدنسازی',
+                    tennis: 'تنیس',
+                    kickboxing: 'کیک بوکس',
+                    swimming: 'شنا',
+                    yoga: 'یوگا',
+                    basketball: 'بسکتبال',
+                    football: 'فوتبال',
+                    'martial-arts': 'هنرهای رزمی'
+                };
+
+                if (gymData[sport].length > 0) {
+                    html += `
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-bold mb-4 text-blue-400">${sportNames[sport]} (${gymData[sport].length} باشگاه)</h3>
+                            <div class="space-y-4">
+                    `;
+
+                    gymData[sport].forEach(gym => {
+                        html += `
+                            <div class="glass-effect rounded-2xl p-6 flex items-center justify-between">
+                                <div class="flex-1">
+                                    <h4 class="text-xl font-bold mb-2">${gym.name}</h4>
+                                    <p class="opacity-75 mb-2">📍 ${gym.location}</p>
+                                    <div class="flex items-center gap-4">
+                                        <span class="rating">⭐ ${gym.rating}</span>
+                                        <span class="text-green-400 font-bold">${gym.price} تومان</span>
+                                        <span class="text-sm opacity-75">${gym.reviews} نظر</span>
+                                    </div>
+                                </div>
+                                <div class="flex gap-3">
+                                    <button onclick="editGym(${gym.id})" class="btn-primary py-2 px-4 text-sm">
+                                        ✏️ ویرایش
+                                    </button>
+                                    <button onclick="deleteGym(${gym.id}, '${sport}')" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-sm transition-all">
+                                        🗑️ حذف
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    html += `
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            if (html === '') {
+                html = '<div class="text-center py-12 opacity-75">هیچ باشگاهی یافت نشد</div>';
+            }
+
+            adminList.innerHTML = html;
+        }
+
+        function deleteGym(gymId, sport) {
+            if (!isAdminLoggedIn) {
+                alert('❌ دسترسی غیرمجاز!');
+                return;
+            }
+
+            if (confirm('آیا از حذف این باشگاه اطمینان دارید؟')) {
+                gymData[sport] = gymData[sport].filter(gym => gym.id !== gymId);
+                alert('✅ باشگاه با موفقیت حذف شد!');
+                updateAdminStats();
+                loadAdminGymsList();
+            }
+        }
+
+        function editGym(gymId) {
+            if (!isAdminLoggedIn) {
+                alert('❌ دسترسی غیرمجاز!');
+                return;
+            }
+            
+            // Find gym
+            let gym = null;
+            let sportKey = '';
+            for (const sport in gymData) {
+                const found = gymData[sport].find(g => g.id === gymId);
+                if (found) {
+                    gym = found;
+                    sportKey = sport;
+                    break;
+                }
+            }
+
+            if (!gym) return;
+
+            // Fill form with gym data
+            document.getElementById('gymName').value = gym.name;
+            document.getElementById('gymSport').value = sportKey;
+            document.getElementById('gymLocation').value = gym.location;
+            document.getElementById('gymPrice').value = gym.price;
+            document.getElementById('gymRating').value = gym.rating;
+            document.getElementById('gymReviews').value = gym.reviews;
+            document.getElementById('gymPhone').value = gym.phone;
+            document.getElementById('gymHours').value = gym.hours;
+            document.getElementById('gymDescription').value = gym.description;
+            document.getElementById('gymWebsite').value = gym.website;
+            document.getElementById('gymFacilities').value = gym.facilities.join('\n');
+
+            // Remove gym from data (will be re-added when form is submitted)
+            gymData[sportKey] = gymData[sportKey].filter(g => g.id !== gymId);
+            
+            alert('📝 اطلاعات باشگاه در فرم بارگذاری شد. پس از ویرایش، دکمه "افزودن باشگاه" را بزنید.');
+            updateAdminStats();
+            loadAdminGymsList();
+        }
+
+        // Initialize page with animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add intersection observer for animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all slide-in elements
+            document.querySelectorAll('.slide-in').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.6s ease-out';
+                observer.observe(el);
+            });
+
+            // Admin keyboard shortcut (Enter key in password field)
+            document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    adminLogin();
+                }
+            });
+
+            // Add hover effects to cards
+            document.querySelectorAll('.sport-card, .gym-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = this.classList.contains('sport-card') ? 
+                        'translateY(-15px) scale(1.02)' : 'translateY(-8px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'969dfb94379a1f50',t:'MTc1NDMwOTc1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
